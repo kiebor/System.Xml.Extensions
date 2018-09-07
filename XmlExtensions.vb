@@ -22,6 +22,51 @@ Public Module XmlExtensions
     End Function
 
     ''' <summary>
+    ''' Returns a new XElement or modifies existing, adding a single specified attribute.
+    ''' </summary>
+    ''' <param name="element">The element.</param>
+    ''' <param name="name">The attribute name.</param>
+    ''' <param name="value">The value.</param>
+    ''' <returns></returns>
+    <Extension>
+    Function WithAttribute(element As XElement, name As String, value As Object) As XElement
+        element.Add(New XAttribute(name, value)) : Return element
+    End Function
+
+    ''' <summary>
+    ''' Returns a new XElement or modifies existing, adding 1 or more specified attributes.
+    ''' </summary>
+    ''' <param name="element">The element.</param>
+    ''' <param name="attributes">The attribute name.</param>
+    ''' <returns></returns>
+    <Extension>
+    Function WithAttributes(element As XElement, attributes As IEnumerable(Of XAttribute)) As XElement
+        element.Add(attributes) : Return element
+    End Function
+
+    ''' <summary>
+    ''' Returns a new XElement or modifies existing, adding a single specified attribute.
+    ''' </summary>
+    ''' <param name="element">The element.</param>
+    ''' <param name="kvp">The KeyValuePair.</param>
+    ''' <returns></returns>
+    <Extension>
+    Function WithAttribute(element As XElement, kvp As KeyValuePair(Of String, Object)) As XElement
+        element.Add(kvp.ToXAttribute) : Return element
+    End Function
+
+    ''' <summary>
+    ''' Returns a new XElement or modifies existing, adding 1 or more specified attributes.
+    ''' </summary>
+    ''' <param name="element">The element.</param>
+    ''' <param name="dictionary">The Dictionary.</param>
+    ''' <returns></returns>
+    <Extension>
+    Function WithAttributes(element As XElement, dictionary As Dictionary(Of String, Object)) As XElement
+        element.Add(dictionary.AsXAttributes) : Return element
+    End Function
+
+    ''' <summary>
     ''' Returns a new XElement or modifies existing, populated with the injected XElements.
     ''' </summary>
     ''' <param name="element">The element.</param>
@@ -101,7 +146,28 @@ Public Module XmlExtensions
     End Function
 
     ''' <summary>
-    ''' Converts a KeyValuePair to XElement with value
+    ''' Converts a KeyValuePair to XAttribute with value
+    ''' </summary>
+    ''' <param name="kvp">The KVP.</param>
+    ''' <returns></returns>
+    <Extension>
+    Function ToXAttribute(kvp As KeyValuePair(Of String, Object)) As XAttribute
+        Return New XAttribute(kvp.Key, kvp.Value)
+    End Function
+
+    ''' <summary>
+    ''' Converts a string to XAttribute with value
+    ''' </summary>
+    ''' <param name="name">The name.</param>
+    ''' <param name="value">The value.</param>
+    ''' <returns></returns>
+    <Extension>
+    Function ToXAttribute(name As String, value As Object) As XAttribute
+        Return New XAttribute(name, value)
+    End Function
+
+    ''' <summary>
+    ''' Converts a Dictionary to XElement with value
     ''' </summary>
     ''' <param name="dictionary">The Dictionary.</param>
     ''' <returns></returns>
@@ -110,6 +176,19 @@ Public Module XmlExtensions
         Dim elements As New List(Of XElement)
         dictionary.ToList().ForEach(Sub(kvp) elements.Add(kvp.ToXElement()))
         Return elements
+    End Function
+
+
+    ''' <summary>
+    ''' Converts a Dictionary to XAttributes with value
+    ''' </summary>
+    ''' <param name="dictionary">The Dictionary.</param>
+    ''' <returns></returns>
+    <Extension>
+    Function AsXAttributes(dictionary As Dictionary(Of String, Object)) As IEnumerable(Of XAttribute)
+        Dim attributes As New List(Of XAttribute)
+        dictionary.ToList.ForEach(Sub(kvp) attributes.Add(kvp.ToXAttribute))
+        Return attributes
     End Function
 
     ''' <summary>
@@ -195,6 +274,51 @@ Public Module XmlExtensions
     Public Function WithRoot(document As XDocument, root As XElement) As XDocument
         If document.Elements.Count < 1 Then document.Insert(root) Else Throw New XmlParseException($"Document already has root element: <{document.Root.Name.ToString}>")
         Return document
+    End Function
+
+    ''' <summary>
+    ''' Returns modified XDocument by adding namespacing at the root element.
+    ''' </summary>
+    ''' <param name="document">The document.</param>
+    ''' <param name="xmlnsUrl">The XMLNS URL.</param>
+    ''' <param name="xsdUrl">The XSD URL.</param>
+    ''' <param name="xsiUrl">The xsi URL.</param>
+    ''' <returns></returns>
+    <Extension>
+    Function WithNamespace(document As XDocument, xmlnsUrl As String, xsdUrl As String, xsiUrl As String) As XDocument
+        Try
+            document.Root.Add(
+                New XAttribute("xmlns", XNamespace.Get(xmlnsUrl).NamespaceName),
+                New XAttribute(XNamespace.Xmlns + "xsd", XNamespace.Get(xsdUrl).NamespaceName),
+                New XAttribute(XNamespace.Xmlns + "xsi", XNamespace.Get(xsiUrl).NamespaceName)
+            )
+            Return document
+        Catch ex As Exception
+            Throw New XmlParseException("Unable to insert Namespace; potentially missing root element.", ex)
+        End Try
+
+    End Function
+
+    ''' <summary>
+    ''' Returns modified XDocument by adding namespacing at the root element.
+    ''' </summary>
+    ''' <param name="document">The document.</param>
+    ''' <param name="xmlns">The XMLNS.</param>
+    ''' <param name="xsd">The XSD.</param>
+    ''' <param name="xsi">The xsi.</param>
+    ''' <returns></returns>
+    <Extension>
+    Function WithNamespace(document As XDocument, xmlns As XNamespace, xsd As XNamespace, xsi As XNamespace) As XDocument
+        Try
+            document.Root.Add(
+                New XAttribute("xmlns", xmlns.NamespaceName),
+                New XAttribute(XNamespace.Xmlns + "xsd", xsd.NamespaceName),
+                New XAttribute(XNamespace.Xmlns + "xsi", xsi.NamespaceName)
+            )
+            Return document
+        Catch ex As Exception
+            Throw New XmlParseException("Unable to insert Namespace; potentially missing root element.", ex)
+        End Try
     End Function
 
     ''' <summary>
