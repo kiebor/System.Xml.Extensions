@@ -1,9 +1,0 @@
-C:\Users\k.borsden\Downloads\System.Xml.XObjects\System.Xml.XObjects\System.Xml.XObjects\bin\Debug\System.Xml.Extensions.dll
-C:\Users\k.borsden\Downloads\System.Xml.XObjects\System.Xml.XObjects\System.Xml.XObjects\bin\Debug\System.Xml.Extensions.pdb
-C:\Users\k.borsden\Downloads\System.Xml.XObjects\System.Xml.XObjects\System.Xml.XObjects\bin\Debug\System.Xml.Extensions.xml
-C:\Users\k.borsden\Downloads\System.Xml.XObjects\System.Xml.XObjects\System.Xml.XObjects\obj\Debug\System.Xml.Resources.resources
-C:\Users\k.borsden\Downloads\System.Xml.XObjects\System.Xml.XObjects\System.Xml.XObjects\obj\Debug\System.Xml.Extensions.vbproj.GenerateResource.cache
-C:\Users\k.borsden\Downloads\System.Xml.XObjects\System.Xml.XObjects\System.Xml.XObjects\obj\Debug\System.Xml.Extensions.vbproj.CoreCompileInputs.cache
-C:\Users\k.borsden\Downloads\System.Xml.XObjects\System.Xml.XObjects\System.Xml.XObjects\obj\Debug\System.Xml.Extensions.dll
-C:\Users\k.borsden\Downloads\System.Xml.XObjects\System.Xml.XObjects\System.Xml.XObjects\obj\Debug\System.Xml.Extensions.xml
-C:\Users\k.borsden\Downloads\System.Xml.XObjects\System.Xml.XObjects\System.Xml.XObjects\obj\Debug\System.Xml.Extensions.pdb
