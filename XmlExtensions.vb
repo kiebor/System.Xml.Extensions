@@ -89,6 +89,29 @@ Public Module XmlExtensions
         Return New XElement(name, value)
     End Function
 
+
+    ''' <summary>
+    ''' Converts a KeyValuePair to XElement with value
+    ''' </summary>
+    ''' <param name="kvp">The KeyValuePair.</param>
+    ''' <returns></returns>
+    <Extension>
+    Function ToXElement(kvp As KeyValuePair(Of String, Object)) As XElement
+        Return New XElement(kvp.Key, kvp.Value)
+    End Function
+
+    ''' <summary>
+    ''' Converts a KeyValuePair to XElement with value
+    ''' </summary>
+    ''' <param name="dictionary">The Dictionary.</param>
+    ''' <returns></returns>
+    <Extension>
+    Function AsXElements(dictionary As Dictionary(Of String, Object)) As IEnumerable(Of XElement)
+        Dim elements As New List(Of XElement)
+        dictionary.ToList().ForEach(Sub(kvp) elements.Add(kvp.ToXElement()))
+        Return elements
+    End Function
+
     ''' <summary>
     ''' Returns a new XDocument or modifies existing, readied with the specified XDeclaration.
     ''' </summary>
